@@ -5,11 +5,11 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import * as serviceWorker from "./serviceWorker";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { BrowserRouter } from "react-router-dom";
 
 import "./index.css";
 import App from "./App";
 import rootReducer from "./rootReducer";
+
 
 const store = createStore(
   rootReducer,
@@ -17,11 +17,9 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById("root")
 );
 

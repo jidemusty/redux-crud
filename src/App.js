@@ -1,16 +1,15 @@
-import React, { Component } from "react";
-import { Link, Route } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 
-import GamesPage from "./GamesPage";
-import "./App.css";
+import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Link to="games">Games</Link>
-
-        <Route path="/games" component={GamesPage} />
+        <header className="App-header">
+          <Link to="games">Games</Link>
+        </header>
       </div>
     );
   }
