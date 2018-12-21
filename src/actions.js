@@ -1,6 +1,7 @@
 export const SET_GAMES = "SET_GAMES";
+export const ADD_GAME = "ADD_GAME";
 
-function handleResponse (response) {
+function handleResponse(response) {
   if (response.ok) {
     return response.json();
   } else {
@@ -15,19 +16,28 @@ export function setGames(games) {
     type: SET_GAMES,
     games
   };
-};
+}
 
-export const saveGame = (data) => {
+export function addGame(game) {
+  return {
+    type: ADD_GAME,
+    game
+  };
+}
+
+export const saveGame = data => {
   return dispatch => {
-    return fetch('/api/games', {
-      method: 'post',
+    return fetch("/api/games", {
+      method: "post",
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }
-    }).then(handleResponse)
-  }
-}
+    })
+      .then(handleResponse)
+      .then(data => dispatch(addGame(data.game)));
+  };
+};
 
 export const fetchGames = () => {
   return dispatch => {
