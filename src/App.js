@@ -1,15 +1,22 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import React, { Component } from "react";
+import { NavLink, Route } from "react-router-dom";
 
-import './App.css';
+import GamesPage from './GamesPage'
+import GameForm from './GameForm'
+import "./App.css";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <Link to="games">Games</Link>
-        </header>
+      <div className="ui container">
+        <div className="ui three item menu">
+          <NavLink className="item" activeClassName="active" exact to="/">Home</NavLink>
+          <NavLink className="item" activeClassName="active" exact to="/games">Games</NavLink>
+          <NavLink className="item" activeClassName="active" exact to="/games/new">Add New Game</NavLink>
+        </div>
+
+        <Route exact path="/games" component={GamesPage} />
+        <Route path="/games/new" component={GameForm} />
       </div>
     );
   }
