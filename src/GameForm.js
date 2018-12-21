@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import classnames from "classnames";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { saveGame, fetchGame } from "./actions";
 
 class GameForm extends Component {
   state = {
@@ -10,22 +7,15 @@ class GameForm extends Component {
     title: this.props.game ? this.props.game.title : "",
     cover: this.props.game ? this.props.game.cover : "",
     errors: {},
-    loading: false,
-    done: false
+    loading: false
   };
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps = nextProps => {
     this.setState({
       _id: nextProps.game.id,
       title: nextProps.game.title,
-      cover: nextProps.game.cover,
-    })
-  }
-
-  componentDidMount = () => {
-    if (this.props.match.params._id) {
-      this.props.fetchGame(this.props.match.params._id);
-    }
+      cover: nextProps.game.cover
+    });
   };
 
   handleChange = e => {
@@ -50,17 +40,15 @@ class GameForm extends Component {
     const isValid = Object.keys(errors).length === 0;
 
     if (isValid) {
-      const { title, cover } = this.state;
+      const { _id, title, cover } = this.state;
       this.setState({ loading: true });
-      this.props.saveGame({ title, cover }).then(
-        () => {
-          this.setState({ done: true });
-        },
-        err =>
+      this.props
+        .saveGame({ _id, title, cover })
+        .catch(err =>
           err.response
             .json()
             .then(({ errors }) => this.setState({ errors, loading: false }))
-      );
+        );
     }
   };
 
@@ -126,21 +114,8 @@ class GameForm extends Component {
       </form>
     );
 
-    return <div>{this.state.done ? <Redirect to="/games" /> : form}</div>;
+    return <div>{form}</div>;
   }
 }
 
-const mapStateToProps = (state, props) => {
-  if (props.match.params._id) {
-    return {
-      game: state.games.find(game => game._id === props.match.params._id)
-    };
-  }
-
-  return { game: null };
-};
-
-export default connect(
-  mapStateToProps,
-  { saveGame, fetchGame }
-)(GameForm);
+export default GameForm;
