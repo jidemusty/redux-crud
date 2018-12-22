@@ -2,6 +2,7 @@ export const SET_GAMES = "SET_GAMES";
 export const ADD_GAME = "ADD_GAME";
 export const GAME_FETCHED = "GAME_FETCHED";
 export const GAME_UPDATED = "GAME_UPDATED";
+export const DELETE_GAME = "DELETE_GAME";
 
 function handleResponse(response) {
   if (response.ok) {
@@ -24,6 +25,13 @@ export function addGame(game) {
   return {
     type: ADD_GAME,
     game
+  };
+}
+
+export function gameDeleted(id) { 
+  return {
+    type: DELETE_GAME,
+    id
   };
 }
 
@@ -57,7 +65,7 @@ export const saveGame = data => {
 
 export const updateGame = data => {
   return dispatch => {
-    return fetch(`/api/games/${data.id}`, {
+    return fetch(`/api/games/${data._id}`, {
       method: "put",
       body: JSON.stringify(data),
       headers: {
@@ -66,6 +74,19 @@ export const updateGame = data => {
     })
       .then(handleResponse)
       .then(data => dispatch(gameUpdated(data.game)));
+  };
+};
+
+export const deleteGame = id => {
+  return dispatch => {
+    return fetch(`/api/games/${id}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(handleResponse)
+      .then(data => dispatch(gameDeleted(id)));
   };
 };
 
